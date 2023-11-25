@@ -25,4 +25,4 @@ const db = pgp({
 // Aquí puedes escribir el código para establecer la conexión a la base de datos y realizar operaciones
 
 // Exportar la configuración de la base de datos
-module.exports = dbConfig;
+module.exports = db;
