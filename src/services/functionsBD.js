@@ -74,4 +74,67 @@ const getPastry = async () => {
         throw new Error('No se pudo obtener las recetas de repostería');
     }
 };
-module.exports = {getRecipes, getTraditional,getSauces,getChristmas,getDrinks,getPastry};
+
+const getRecipeById = async (id) => {
+    try
+    {
+        const recetaById = await db.one('SELECT r.nombre, r.tipo, r.tiempoduracion, r.imagenprincipal FROM receta r where r.cod = $1',[id]);
+        return recetaById;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener la receta');
+    }
+};
+
+const getSteps = async (id) => {
+    try
+    {
+        const steps = await db.many('select p.numpaso, p.descripcion from pasos p where p.receta = $1 ',[id]);
+        return steps;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener los pasos');
+    }
+};
+
+const getIngredients = async (id) => {
+    try
+    {
+        const ingredients = await db.many('select distinct i.ingrediente from recetaingrediente ri inner join ingredientes i on ri.ingrediente = i.id where ri.receta = $1;',[id]);
+        return ingredients;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener los ingredientes');
+    }
+};
+
+const getTools = async (id) => {
+    try
+    {
+        const tools = await db.many('SELECT distinct h.nombre from recetaherramienta rh inner join herramientas h on rh.herramienta = h.id where rh.receta = $1;',[id]);
+        return tools;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener las herramientas');
+    }
+};
+
+module.exports = {
+    getRecipes, 
+    getTraditional,
+    getSauces,
+    getChristmas,
+    getDrinks,
+    getPastry,
+    getRecipeById,
+    getSteps,
+    getIngredients,
+    getTools};
