@@ -127,6 +127,33 @@ const getTools = async (id) => {
     }
 };
 
+    const filter = async (tiempoduracion,numpasos, ingredientes) => {
+        try
+        {
+            let query = 'SELECT DISTINCT r.nombre, r.tipo, r.tiempoduracion, r.imagenprincipal FROM receta r join recetaingrediente ri on r.cod = ri.receta join ingredientes i on ri.ingrediente = i.id inner join pasos p on p.receta = r.cod where 1=1 ';
+
+            if (tiempoduracion) 
+            {
+                query += `AND SUBSTRING(CAST(r.tiempoduracion AS VARCHAR), 2, 1) = CAST(${tiempoduracion} AS VARCHAR)` ;
+            }
+
+            if (numpasos) 
+            {
+            }
+            if (ingredientes)
+            {
+            }
+            const recetasF = await db.any(query);
+            return recetasF;
+        }
+        catch(error)
+        {
+            console.log(error);
+            throw new Error('No se pudo obtener las herramientas');
+        }
+};
+
+
 module.exports = {
     getRecipes, 
     getTraditional,
@@ -137,4 +164,5 @@ module.exports = {
     getRecipeById,
     getSteps,
     getIngredients,
-    getTools};
+    getTools,
+    filter};
