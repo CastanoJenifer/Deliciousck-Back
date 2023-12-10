@@ -154,6 +154,20 @@ const getTools = async (id) => {
 };
 
 
+const getRecetasBynombre = async (nombre) => {
+    try
+    {
+        const recetas = await db.any('SELECT * FROM receta where nombre ilike $1' ,[`%${nombre}%`]);
+        return recetas;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener las recetas');
+    }
+};
+
+
 module.exports = {
     getRecipes, 
     getTraditional,
@@ -165,4 +179,6 @@ module.exports = {
     getSteps,
     getIngredients,
     getTools,
-    filter};
+    filter,
+    getRecetasBynombre
+};
