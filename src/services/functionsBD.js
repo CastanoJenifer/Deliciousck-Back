@@ -146,6 +146,54 @@ const filter = async (tiempoduracion) => {
     }
 };
 
+const getAllComments = async (receta) =>
+{
+    try
+    {
+        const resultado = await db.manyOrNone('SELECT * FROM comentarios WHERE codreceta = $1 ',[receta])
+        if(resultado)
+        {
+            return resultado;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener los comentarios');
+    }
+};
+
+const insertarComentario = async(nombre, receta, comentario) =>
+{
+    try
+    {
+        db.none('INSERT INTO comentarios (nombrepersona, codreceta, comentario) VALUES($1, $2, $3)' , 
+        [nombre, receta, comentario]);
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo realizar el comentario');
+    }
+}
+const insertarValoracionComentario = async(nombre, receta, comentario, valoracion) =>
+{
+    try
+    {
+        db.none('INSERT INTO comentarios (nombrepersona, codreceta, comentario, valoracion) VALUES($1, $2, $3, $4)' ,
+        [nombre, receta,comentario, valoracion]);
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo realizar la valoracion');
+    }
+}
+
 
 const getRecetasBynombre = async (nombre) => {
     try
