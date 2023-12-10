@@ -5,6 +5,8 @@ const {getAllRecipes} = require('../controllers/allRecipes.js');
 const {traditionalRecipe, christmasRecipe, saucesRecipe,drinksRecipe,pastryRecipe} = require('../controllers/typesOfRecipes.js');
 const recipeBody = require('../controllers/recipeBody.js');
 const {filterRecipes} = require('../controllers/filters.js');
+const {sendAllComments} = require('../controllers/comments.show.js');
+const {realizarComentario} = require('../controllers/comments.js');
 
 router.use(express.json());
 
@@ -17,5 +19,8 @@ routerReceps.get('/bebidas', drinksRecipe);
 routerReceps.get('/reposteria', pastryRecipe);
 routerReceps.get('/body/:id', recipeBody);
 routerReceps.get('/filters', filterRecipes);
+routerReceps.get('/mostrarComentarios/:id', sendAllComments);
+
+routerReceps.post('/realizarComentario', realizarComentario);
 
 module.exports = {router, routerReceps};

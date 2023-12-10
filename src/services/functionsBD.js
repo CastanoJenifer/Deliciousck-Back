@@ -127,31 +127,72 @@ const getTools = async (id) => {
     }
 };
 
-    const filter = async (tiempoduracion,numpasos, ingredientes) => {
-        try
-        {
-            let query = 'SELECT DISTINCT r.nombre, r.tipo, r.tiempoduracion, r.imagenprincipal FROM receta r join recetaingrediente ri on r.cod = ri.receta join ingredientes i on ri.ingrediente = i.id inner join pasos p on p.receta = r.cod where 1=1 ';
+const filter = async (tiempoduracion) => {
+    try
+    {
+        let query = 'SELECT DISTINCT r.nombre, r.tipo, r.tiempoduracion, r.imagenprincipal FROM receta r join recetaingrediente ri on r.cod = ri.receta join ingredientes i on ri.ingrediente = i.id inner join pasos p on p.receta = r.cod where 1=1 ';
 
-            if (tiempoduracion) 
-            {
-                query += `AND SUBSTRING(CAST(r.tiempoduracion AS VARCHAR), 2, 1) = CAST(${tiempoduracion} AS VARCHAR)` ;
-            }
-            if (numpasos) 
-            {
-            }
-            if (ingredientes)
-            {
-            }
-            const recetasF = await db.any(query);
-            return recetasF;
-        }
-        catch(error)
+        if (tiempoduracion) 
         {
-            console.log(error);
-            throw new Error('No se pudo obtener las herramientas');
+            query += `AND SUBSTRING(CAST(r.tiempoduracion AS VARCHAR), 2, 1) = CAST(${tiempoduracion} AS VARCHAR)` ;
         }
+        const recetasF = await db.any(query);
+        return recetasF;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener las herramientas');
+    }
 };
 
+const getAllComments = async (receta) =>
+{
+    try
+    {
+        const resultado = await db.manyOrNone('SELECT * FROM comentarios WHERE codreceta = $1 ',[receta])
+        if(resultado)
+        {
+            return resultado;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener los comentarios');
+    }
+};
+
+const insertarComentario = async(nombre, receta, comentario) =>
+{
+    try
+    {
+        db.none('INSERT INTO comentarios (nombrepersona, codreceta, comentario) VALUES($1, $2, $3)' , 
+        [nombre, receta, comentario]);
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo realizar el comentario');
+    }
+}
+const insertarValoracionComentario = async(nombre, receta, comentario, valoracion) =>
+{
+    try
+    {
+        db.none('INSERT INTO comentarios (nombrepersona, codreceta, comentario, valoracion) VALUES($1, $2, $3, $4)' ,
+        [nombre, receta,comentario, valoracion]);
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo realizar la valoracion');
+    }
+}
 
 module.exports = {
     getRecipes, 
@@ -164,4 +205,7 @@ module.exports = {
     getSteps,
     getIngredients,
     getTools,
-    filter};
+    filter,
+    getAllComments,
+    insertarComentario,
+    insertarValoracionComentario};
