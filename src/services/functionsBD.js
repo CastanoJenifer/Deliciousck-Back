@@ -136,7 +136,6 @@ const getTools = async (id) => {
             {
                 query += `AND SUBSTRING(CAST(r.tiempoduracion AS VARCHAR), 2, 1) = CAST(${tiempoduracion} AS VARCHAR)` ;
             }
-
             if (numpasos) 
             {
             }
