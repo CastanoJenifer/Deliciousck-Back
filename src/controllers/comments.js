@@ -1,7 +1,7 @@
 const {insertarComentario,insertarValoracionComentario} = require('../services/functionsBD.js');
 async function realizarComentario (req, res)
 {
-    const nombre = req.body.nombre;
+    const nombrepersona = req.body.nombrepersona;
     const receta = req.body.receta;
     const valoracion = req.body.valoracion;
     const comentario = req.body.comentario;
@@ -19,12 +19,12 @@ async function realizarComentario (req, res)
 
     if(valoracion == null)
     {
-        await insertarComentario(nombre, receta, comentario);
+        await insertarComentario(nombrepersona, receta, comentario);
         return res.status(200).send({message: 'La valoración fue realizada exitosamente'});        
     }
     if(!(valoracion == null))
     {
-        await insertarValoracionComentario(nombre, receta, comentario, parseInt(valoracion));
+        await insertarValoracionComentario(nombrepersona, receta, comentario, parseInt(valoracion));
         return res.status(200).send({message: 'La valoración fue realizada exitosamente'});
     }
 }
