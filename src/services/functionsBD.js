@@ -194,6 +194,21 @@ const insertarValoracionComentario = async(nombre, receta, comentario, valoracio
     }
 }
 
+
+const getRecetasBynombre = async (nombre) => {
+    try
+    {
+        const recetas = await db.any('SELECT * FROM receta where nombre ilike $1' ,[`%${nombre}%`]);
+        return recetas;
+    }
+    catch(error)
+    {
+        console.log(error);
+        throw new Error('No se pudo obtener las recetas');
+    }
+};
+
+
 module.exports = {
     getRecipes, 
     getTraditional,
@@ -208,4 +223,6 @@ module.exports = {
     filter,
     getAllComments,
     insertarComentario,
-    insertarValoracionComentario};
+    insertarValoracionComentario,
+    getRecetasBynombre
+};
