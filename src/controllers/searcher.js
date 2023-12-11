@@ -1,10 +1,10 @@
 const {getRecetasBynombre} = require('../services/functionsBD.js');
 const search = async (req, res) => {
     try{
-        const searchParam = req.query.nombre;
+        const searchParam = req.params.nombre;
     
         const [key, value] = searchParam.split('=');
-    
+        console.log(key, value);
         const resultado = await getRecetasBynombre(value);
     
         if (resultado.length === 0) {

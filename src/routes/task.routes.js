@@ -20,7 +20,7 @@ routerReceps.get('/bebidas', drinksRecipe);
 routerReceps.get('/reposteria', pastryRecipe);
 routerReceps.get('/body/:id', recipeBody);
 routerReceps.get('/filters', filterRecipes);
-routerReceps.get('/search', search);
+routerReceps.get('/search/:nombre', search);
 routerReceps.get('/mostrarComentarios/:id', sendAllComments);
 
 routerReceps.post('/realizarComentario', realizarComentario);
